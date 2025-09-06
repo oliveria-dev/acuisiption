@@ -8,7 +8,10 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "repository": {
     "type": "git",
@@ -23,11 +26,14 @@
   },
   "homepage": "https://github.com/adrianhajdin/acquisitions#readme",
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.1",
     "dotenv": "^17.2.2",
+    "drizzle-orm": "^0.44.5",
     "express": "^5.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
+    "drizzle-kit": "^0.31.4",
     "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
