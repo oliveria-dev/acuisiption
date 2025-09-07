@@ -14,6 +14,7 @@
     "#validations/*": "./src/validations/*"
   },
   "scripts": {
+    "start": "node src/index.js",
     "dev": "node --watch src/index.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -21,7 +22,9 @@
     "format:check": "prettier --check .",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "dev:docker": "sh ./scripts/dev.sh",
+    "prod:docker": "sh ./scripts/prod.sh"
   },
   "repository": {
     "type": "git",
