@@ -20,6 +20,7 @@ This is a Node.js backend API for an acquisitions system built with Express.js. 
 ## Common Development Commands
 
 ### Development
+
 ```bash
 # Start development server with file watching
 npm run dev
@@ -29,6 +30,7 @@ npm start
 ```
 
 ### Database Operations
+
 ```bash
 # Generate database migrations
 npm run db:generate
@@ -41,6 +43,7 @@ npm run db:studio
 ```
 
 ### Code Quality
+
 ```bash
 # Run linting
 npm run lint
@@ -58,12 +61,15 @@ npm run format:check
 ## Architecture Overview
 
 ### Entry Point Flow
+
 - `src/index.js` → loads environment variables and imports `src/server.js`
 - `src/server.js` → imports Express app and starts server
 - `src/app.js` → main Express application setup with middleware and routes
 
 ### Directory Structure and Import Aliases
+
 The project uses Node.js import maps for clean module imports:
+
 - `#config/*` → `./src/config/*` (database, logger configuration)
 - `#controllers/*` → `./src/controllers/*` (request handlers)
 - `#middleware/*` → `./src/middleware/*` (custom middleware - currently empty)
@@ -74,6 +80,7 @@ The project uses Node.js import maps for clean module imports:
 - `#validations/*` → `./src/validations/*` (Zod validation schemas)
 
 ### Application Layers
+
 1. **Routes** (`src/routes/`) - Express route definitions
 2. **Controllers** (`src/controllers/`) - Handle HTTP requests/responses
 3. **Services** (`src/services/`) - Business logic and data operations
@@ -82,6 +89,7 @@ The project uses Node.js import maps for clean module imports:
 6. **Utils** (`src/utils/`) - Shared utility functions
 
 ### Database Architecture
+
 - Uses Drizzle ORM with PostgreSQL
 - Neon serverless database connection
 - Schema files in `src/models/`
@@ -89,6 +97,7 @@ The project uses Node.js import maps for clean module imports:
 - Connection configured in `src/config/database.js`
 
 ### Authentication Flow
+
 - JWT-based authentication with httpOnly cookies
 - Password hashing with bcrypt (10 rounds)
 - User model with roles (user/admin)
@@ -96,6 +105,7 @@ The project uses Node.js import maps for clean module imports:
 - Cookie utilities in `src/utils/cookies.js`
 
 ### Logging Strategy
+
 - Winston logger configured in `src/config/logger.js`
 - File logging: `logs/error.log` and `logs/combined.log`
 - Console logging in development
@@ -104,6 +114,7 @@ The project uses Node.js import maps for clean module imports:
 ## Environment Configuration
 
 Required environment variables (create `.env` file):
+
 ```env
 PORT=3000
 DATABASE_URL=postgresql://...
@@ -115,16 +126,19 @@ LOG_LEVEL=info
 ## Development Patterns
 
 ### Error Handling
+
 - Controllers use try-catch with next(error) for error propagation
 - Custom error messages for business logic violations
 - Validation errors formatted using `formatValidationError` utility
 
 ### Validation Pattern
+
 - Zod schemas defined in `src/validations/`
 - Controllers validate using `schema.safeParse()`
 - Formatted error responses for validation failures
 
 ### Service Layer Pattern
+
 - Business logic separated into service functions
 - Database operations abstracted from controllers
 - Reusable functions for common operations
@@ -132,6 +146,7 @@ LOG_LEVEL=info
 ## Code Style Guidelines
 
 ### ESLint Configuration
+
 - 2-space indentation
 - Single quotes for strings
 - Semicolons required
@@ -140,6 +155,7 @@ LOG_LEVEL=info
 - No unused variables (except with `_` prefix)
 
 ### Import/Export Patterns
+
 - ES modules with `import`/`export`
 - Use path aliases (`#config/*`) instead of relative paths
 - Named exports for utilities, default exports for main modules
@@ -147,6 +163,7 @@ LOG_LEVEL=info
 ## Testing Strategy
 
 Currently no tests are set up, but the project structure supports adding:
+
 - Unit tests for services and utilities
 - Integration tests for API endpoints
 - Database tests using test database

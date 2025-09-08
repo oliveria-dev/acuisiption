@@ -16,7 +16,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(morgan('combined', { stream: { write: (message) => logger.info(message.trim()) }}));
+app.use(
+  morgan('combined', {
+    stream: { write: message => logger.info(message.trim()) },
+  })
+);
 
 app.use(securityMiddleware);
 
@@ -27,7 +31,13 @@ app.get('/', (req, res) => {
 });
 
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', timestamp: new Date().toISOString(), uptime: process.uptime() });
+  res
+    .status(200)
+    .json({
+      status: 'OK',
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+    });
 });
 
 app.get('/api', (req, res) => {
@@ -38,7 +48,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 
 app.use((req, res) => {
-    res.status(404).json({ error: 'Route not found' });
-})
+  res.status(404).json({ error: 'Route not found' });
+});
 
 export default app;

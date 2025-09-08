@@ -1,6 +1,14 @@
 import logger from '#config/logger.js';
-import { getAllUsers, getUserById, updateUser, deleteUser } from '#services/users.service.js';
-import { userIdSchema, updateUserSchema } from '#validations/users.validation.js';
+import {
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+} from '#services/users.service.js';
+import {
+  userIdSchema,
+  updateUserSchema,
+} from '#validations/users.validation.js';
 import { formatValidationError } from '#utils/format.js';
 
 export const fetchAllUsers = async (req, res, next) => {
@@ -30,7 +38,7 @@ export const fetchUserById = async (req, res, next) => {
     if (!validationResult.success) {
       return res.status(400).json({
         error: 'Validation failed',
-        details: formatValidationError(validationResult.error)
+        details: formatValidationError(validationResult.error),
       });
     }
 
@@ -40,7 +48,7 @@ export const fetchUserById = async (req, res, next) => {
     logger.info(`User ${user.email} retrieved successfully`);
     res.json({
       message: 'User retrieved successfully',
-      user
+      user,
     });
   } catch (e) {
     logger.error(`Error fetching user by id: ${e.message}`);
@@ -63,7 +71,7 @@ export const updateUserById = async (req, res, next) => {
     if (!idValidationResult.success) {
       return res.status(400).json({
         error: 'Validation failed',
-        details: formatValidationError(idValidationResult.error)
+        details: formatValidationError(idValidationResult.error),
       });
     }
 
@@ -73,7 +81,7 @@ export const updateUserById = async (req, res, next) => {
     if (!updateValidationResult.success) {
       return res.status(400).json({
         error: 'Validation failed',
-        details: formatValidationError(updateValidationResult.error)
+        details: formatValidationError(updateValidationResult.error),
       });
     }
 
@@ -84,7 +92,7 @@ export const updateUserById = async (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({
         error: 'Authentication required',
-        message: 'You must be logged in to update user information'
+        message: 'You must be logged in to update user information',
       });
     }
 
@@ -92,7 +100,7 @@ export const updateUserById = async (req, res, next) => {
     if (req.user.role !== 'admin' && req.user.id !== id) {
       return res.status(403).json({
         error: 'Access denied',
-        message: 'You can only update your own information'
+        message: 'You can only update your own information',
       });
     }
 
@@ -100,7 +108,7 @@ export const updateUserById = async (req, res, next) => {
     if (updates.role && req.user.role !== 'admin') {
       return res.status(403).json({
         error: 'Access denied',
-        message: 'Only administrators can change user roles'
+        message: 'Only administrators can change user roles',
       });
     }
 
@@ -114,7 +122,7 @@ export const updateUserById = async (req, res, next) => {
     logger.info(`User ${updatedUser.email} updated successfully`);
     res.json({
       message: 'User updated successfully',
-      user: updatedUser
+      user: updatedUser,
     });
   } catch (e) {
     logger.error(`Error updating user: ${e.message}`);
@@ -141,7 +149,7 @@ export const deleteUserById = async (req, res, next) => {
     if (!validationResult.success) {
       return res.status(400).json({
         error: 'Validation failed',
-        details: formatValidationError(validationResult.error)
+        details: formatValidationError(validationResult.error),
       });
     }
 
@@ -151,7 +159,7 @@ export const deleteUserById = async (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({
         error: 'Authentication required',
-        message: 'You must be logged in to delete users'
+        message: 'You must be logged in to delete users',
       });
     }
 
@@ -159,7 +167,7 @@ export const deleteUserById = async (req, res, next) => {
     if (req.user.role !== 'admin') {
       return res.status(403).json({
         error: 'Access denied',
-        message: 'Only administrators can delete users'
+        message: 'Only administrators can delete users',
       });
     }
 
@@ -167,7 +175,7 @@ export const deleteUserById = async (req, res, next) => {
     if (req.user.id === id) {
       return res.status(403).json({
         error: 'Operation denied',
-        message: 'You cannot delete your own account'
+        message: 'You cannot delete your own account',
       });
     }
 
@@ -176,7 +184,7 @@ export const deleteUserById = async (req, res, next) => {
     logger.info(`User ${deletedUser.email} deleted successfully`);
     res.json({
       message: 'User deleted successfully',
-      user: deletedUser
+      user: deletedUser,
     });
   } catch (e) {
     logger.error(`Error deleting user: ${e.message}`);

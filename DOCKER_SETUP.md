@@ -5,11 +5,13 @@ This guide explains how to run the Acquisitions API using Docker with different 
 ## 🏗️ Architecture Overview
 
 ### Development Environment
+
 - **Neon Local**: Runs a local proxy that creates ephemeral database branches
 - **Application**: Connects to Neon Local proxy instead of cloud database
 - **Benefits**: Fresh database for each session, no impact on production data
 
 ### Production Environment
+
 - **Neon Cloud Database**: Direct connection to your production Neon database
 - **Application**: Optimized production build with resource limits
 - **Benefits**: Production-ready deployment with proper security and performance
@@ -25,6 +27,7 @@ This guide explains how to run the Acquisitions API using Docker with different 
 ### 1. Get Neon Credentials
 
 From your [Neon Console](https://console.neon.tech):
+
 - **NEON_API_KEY**: Go to Account Settings → API Keys
 - **NEON_PROJECT_ID**: Found in Project Settings → General
 - **DATABASE_URL**: Copy from your dashboard (for production)
@@ -32,7 +35,9 @@ From your [Neon Console](https://console.neon.tech):
 ### 2. Configure Environment Files
 
 #### Development Configuration
+
 Edit `.env.development`:
+
 ```bash
 # Required for Neon Local
 NEON_API_KEY=neon_api_1ABCDEFGHijklmnop1234567890
@@ -46,7 +51,9 @@ LOG_LEVEL=debug
 ```
 
 #### Production Configuration
+
 Edit `.env.production`:
+
 ```bash
 # Direct Neon Cloud connection
 DATABASE_URL=postgres://username:password@ep-cool-darkness-123456.us-east-2.aws.neon.tech/dbname?sslmode=require
@@ -71,6 +78,7 @@ docker-compose -f docker-compose.dev.yml --env-file .env.development up --build
 ```
 
 This will:
+
 1. Start Neon Local proxy on port 5432
 2. Create an ephemeral database branch from your main branch
 3. Start your application with hot-reload on port 3000
@@ -115,6 +123,7 @@ docker-compose -f docker-compose.prod.yml --env-file .env.production up --build 
 ```
 
 This will:
+
 1. Build optimized production image
 2. Connect directly to your Neon Cloud database
 3. Run with resource limits and health checks
@@ -148,6 +157,7 @@ docker-compose -f docker-compose.prod.yml up --scale app=3 -d
 ### Running Migrations
 
 #### Development
+
 ```bash
 # Inside the running dev container
 docker exec acquisitions-app-dev npm run db:migrate
@@ -157,6 +167,7 @@ docker exec acquisitions-neon-local psql -U neon -d neondb
 ```
 
 #### Production
+
 ```bash
 # Inside the running prod container
 docker exec acquisitions-app-prod npm run db:migrate
@@ -179,22 +190,26 @@ docker exec acquisitions-app-prod npm run db:studio
 ## 🌐 Network Configuration
 
 ### Development
+
 - **Application**: http://localhost:3000
 - **Neon Local**: localhost:5432
 - **Drizzle Studio**: http://localhost:4983
 
 ### Production
+
 - **Application**: http://localhost:3000 (configure reverse proxy)
 - **Database**: Direct connection to Neon Cloud
 
 ## 🔒 Security Considerations
 
 ### Development
+
 - Ephemeral databases automatically deleted
 - Debug logging may expose sensitive information
 - Use only for development
 
 ### Production
+
 - Strong JWT secrets
 - CORS properly configured
 - Resource limits enforced
@@ -205,6 +220,7 @@ docker exec acquisitions-app-prod npm run db:studio
 ### Common Issues
 
 #### "Cannot connect to Neon Local"
+
 ```bash
 # Check if Neon Local is healthy
 docker-compose -f docker-compose.dev.yml ps
@@ -217,6 +233,7 @@ docker-compose -f docker-compose.dev.yml config
 ```
 
 #### "Database migration failed"
+
 ```bash
 # Check database connection
 docker exec acquisitions-app-dev npm run db:studio
@@ -227,6 +244,7 @@ docker exec -it acquisitions-app-dev npm run db:migrate
 ```
 
 #### "Port already in use"
+
 ```bash
 # Stop all containers
 docker-compose -f docker-compose.dev.yml down

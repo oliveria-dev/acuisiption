@@ -1,18 +1,18 @@
 import logger from '#config/logger.js';
-import {signupSchema, signInSchema} from '#validations/auth.validation.js';
-import {formatValidationError} from '#utils/format.js';
-import {createUser, authenticateUser} from '#services/auth.service.js';
-import {jwttoken} from '#utils/jwt.js';
-import {cookies} from '#utils/cookies.js';
+import { signupSchema, signInSchema } from '#validations/auth.validation.js';
+import { formatValidationError } from '#utils/format.js';
+import { createUser, authenticateUser } from '#services/auth.service.js';
+import { jwttoken } from '#utils/jwt.js';
+import { cookies } from '#utils/cookies.js';
 
 export const signup = async (req, res, next) => {
   try {
     const validationResult = signupSchema.safeParse(req.body);
 
-    if(!validationResult.success) {
+    if (!validationResult.success) {
       return res.status(400).json({
         error: 'Validation failed',
-        details: formatValidationError(validationResult.error)
+        details: formatValidationError(validationResult.error),
       });
     }
 
@@ -20,7 +20,11 @@ export const signup = async (req, res, next) => {
 
     const user = await createUser({ name, email, password, role });
 
-    const token = jwttoken.sign({ id: user.id, email: user.email, role: user.role });
+    const token = jwttoken.sign({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    });
 
     cookies.set(res, 'token', token);
 
@@ -28,13 +32,16 @@ export const signup = async (req, res, next) => {
     res.status(201).json({
       message: 'User registered',
       user: {
-        id: user.id, name: user.name, email: user.email, role: user.role
-      }
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
     });
   } catch (e) {
     logger.error('Signup error', e);
 
-    if(e.message === 'User with this email already exists') {
+    if (e.message === 'User with this email already exists') {
       return res.status(409).json({ error: 'Email already exist' });
     }
 
@@ -49,7 +56,7 @@ export const signIn = async (req, res, next) => {
     if (!validationResult.success) {
       return res.status(400).json({
         error: 'Validation failed',
-        details: formatValidationError(validationResult.error)
+        details: formatValidationError(validationResult.error),
       });
     }
 
@@ -57,7 +64,11 @@ export const signIn = async (req, res, next) => {
 
     const user = await authenticateUser({ email, password });
 
-    const token = jwttoken.sign({ id: user.id, email: user.email, role: user.role });
+    const token = jwttoken.sign({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    });
 
     cookies.set(res, 'token', token);
 
@@ -65,8 +76,11 @@ export const signIn = async (req, res, next) => {
     res.status(200).json({
       message: 'User signed in successfully',
       user: {
-        id: user.id, name: user.name, email: user.email, role: user.role
-      }
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
     });
   } catch (e) {
     logger.error('Sign in error', e);
@@ -82,10 +96,10 @@ export const signIn = async (req, res, next) => {
 export const signOut = async (req, res, next) => {
   try {
     cookies.clear(res, 'token');
-    
+
     logger.info('User signed out successfully');
     res.status(200).json({
-      message: 'User signed out successfully'
+      message: 'User signed out successfully',
     });
   } catch (e) {
     logger.error('Sign out error', e);
