@@ -141,7 +141,7 @@ LOG_LEVEL=info
 DATABASE_URL=
 
 # Arcjet
-ARCJET_KEY=ajkey_01k4heqttkeb1v1exhzvf4zped
+ARCJET_KEY=
 ```
 
 Replace the placeholder values with your real credentials. You can get these by signing up at: [**Arcjet**](https://jsm.dev/dops25-arcjet), [**Neon**](https://jsm.dev/dops25-neon).
